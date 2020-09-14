@@ -1,39 +1,33 @@
-import React from "react";
-import { Table } from 'react-bootstrap'
+import React, {Component} from 'react';
+import noteService from '../services/notes'
+import Note from './Note'
 
-const List = () => {
+export default class  List extends Component  {
 
-    return(
-        <div className="container">
-            {/* A JSX comment */}
+    state= {
+        notes: [],
+    };
 
-            {/* <div>
-                <p>Valinta 2.</p>
-            </div>
-            */}
-            <Table striped>
-            <tbody>
-                <tr>
-                    <td>
-                        <p>1. rivi</p>
-                    </td>
-                    <td>
-                        <p>kdfjhfdkjhsfdkjh</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>2. rivi</p>
-                    </td>
-                    <td>
-                        <p>jhgkjdkgjgdkjhdgk</p>
-                    </td>
-                </tr>
-            </tbody>
-            </Table>
+    componentDidMount() {
+        noteService.getAll().then(res=>{
+            console.log("get all" + res[1].done);
+            this.setState({notes: res})
+        })
+    };
 
-        </div>
-    )
+
+ render() {
+     return (
+         <div>
+             <h1>Notes</h1>
+             <ul>
+                 {this.state.notes.map(note =>
+                     <Note key={note.id} note={note}/>
+                 )}
+             </ul>
+         </div>
+     )
+ }
 }
 
-export default List
+
